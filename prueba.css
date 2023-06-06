@@ -1,9 +1,9 @@
 button {
-  height: 20px;
-  width: 20px;
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
   font-weight: bold;
   background-color: red;
-  border-radius: 50%;
 }
 
 .record-btn {
@@ -48,11 +48,8 @@ button {
 .play-btn {
   background-color: blue;
   color: white;
-  padding: 10px 20px;
-  border-radius: 50%;
   border: none;
-  font-size: 16px;
-  margin-left: 10px;
+  font-size: 12px;
 }
 
 .play-btn:hover {
