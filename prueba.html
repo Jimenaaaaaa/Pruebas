@@ -10,29 +10,68 @@
 </head>
 
 <body>
-  <button id="start-btn">Start Recording</button>
-  <button id="stop-btn">Stop Recording</button>
+  <button id="record-btn" class="record-btn">
+    <span id="icon-mic" class="icon-mic"></span>
+    <span id="icon-pause" class="icon-pause"></span>
+  </button>
+  <button id="play-btn" class="play-btn" disabled>Play</button>
   <div id="output"></div>
   <script>
-    const startButton = document.getElementById('start-btn');
-    const stopButton = document.getElementById('stop-btn');
+    const recordButton = document.getElementById('record-btn');
+    const playButton = document.getElementById('play-btn');
     const outputDiv = document.getElementById('output');
-    let recognition;
+    let isRecording = false;
+    let recordedChunks = [];
+    let mediaRecorder;
 
-    startButton.addEventListener('click', () => {
-      recognition = new webkitSpeechRecognition(); // Create a new instance of the speech recognition object
+    recordButton.addEventListener('click', () => {
+      isRecording = !isRecording;
 
-      recognition.start(); // Start speech recognition
-
-      recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
-        outputDiv.textContent = transcript;
-      };
+      if (isRecording) {
+        recordButton.classList.add('recording');
+        outputDiv.textContent = 'Recording started...';
+        startRecording();
+      } else {
+        recordButton.classList.remove('recording');
+        outputDiv.textContent = 'Recording stopped.';
+        stopRecording();
+      }
     });
 
-    stopButton.addEventListener('click', () => {
-      recognition.stop(); // Stop speech recognition
+    playButton.addEventListener('click', () => {
+      const blob = new Blob(recordedChunks, { type: 'audio/webm' });
+      const audioUrl = URL.createObjectURL(blob);
+      const audio = new Audio(audioUrl);
+      audio.play();
     });
+
+    function startRecording() {
+      navigator.mediaDevices.getUserMedia({ audio: true })
+        .then((stream) => {
+          recordedChunks = [];
+          mediaRecorder = new MediaRecorder(stream);
+          mediaRecorder.addEventListener('dataavailable', (event) => {
+            if (event.data.size > 0) {
+              recordedChunks.push(event.data);
+              playButton.disabled = false;
+            }
+          });
+          mediaRecorder.start();
+        })
+        .catch((error) => {
+          console.error('Error accessing microphone:', error);
+        });
+    }
+
+    function stopRecording() {
+      if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+        mediaRecorder.stop();
+        mediaRecorder = null;
+      }
+    }
+
+    playButton.disabled = false;
+
   </script>
 </body>
 

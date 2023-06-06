@@ -1,5 +1,66 @@
 button {
-  color: red;
-  background-color: aliceblue;
+  height: 20px;
+  width: 20px;
   font-weight: bold;
+  background-color: red;
+  border-radius: 50%;
+}
+
+.record-btn {
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.icon-mic,
+.icon-pause {
+  display: none;
+}
+
+.icon-mic:before {
+  content: "\f130";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+}
+
+.icon-pause:before {
+  content: "\f04c";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+}
+
+.recording .icon-mic {
+  display: none;
+}
+
+.recording .icon-pause {
+  display: inline-block;
+}
+
+.not-recording .icon-mic {
+  display: inline-block;
+}
+
+.not-recording .icon-pause {
+  display: none;
+}
+
+.play-btn {
+  background-color: blue;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 50%;
+  border: none;
+  font-size: 16px;
+  margin-left: 10px;
+}
+
+.play-btn:hover {
+  background-color: darkblue;
+  cursor: pointer;
+}
+
+.play-btn:disabled {
+  background-color: gray;
+  cursor: not-allowed;
 }
